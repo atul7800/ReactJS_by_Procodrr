@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { FaArrowUp, FaArrowDown } from "react-icons/fa6";
 
 function ExpenceTable({ expenses }) {
-  //const [totalAmount, setTotalAmount] = useState(0);
+  //const [totalAmount, setTotalAmount] = useState(0); atul
   let total = 0;
   const [filteredData, setFilteredData] = useState(expenses);
   const [value, setValue] = useState("All");
