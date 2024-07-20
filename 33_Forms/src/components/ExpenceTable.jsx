@@ -6,28 +6,31 @@ function ExpenceTable({ expenses }) {
   const [filteredData, setFilteredData] = useState(expenses);
   const [value, setValue] = useState("All");
   const [lowToHigh, setLowToHigh] = useState(true);
-  const [filterQuery, setFilterQuery] = useState(true);
 
   useEffect(() => {
     sort();
-    console.log();
   }, []);
+
+  useEffect(() => {
+    setFilteredData(expenses);
+  }, [expenses]);
 
   //update total amount
   filteredData.map((expense) => {
-    total += expense.amount;
+    total += +expense.amount; // + operator used to convert string into number, shorthand of Number()
   });
 
-  const handleChange = () => {
-    console.log(typeof e.target.value);
+  const filter = (e) => {
     setValue(e.target.value);
-  };
-
-  const filterData = (expense) => {
-    if (value === "All") {
-      return true;
+    if (e.target.value === "All") {
+      return setFilteredData(expenses);
     } else {
-      return expense.category === value;
+      setFilteredData(
+        // Method 1
+        // expenses.filter((expense) => expense.category === e.target.value);
+        //Method 2
+        expenses.filter((expense) => expense.category.includes(e.target.value))
+      );
     }
   };
 
@@ -47,7 +50,7 @@ function ExpenceTable({ expenses }) {
         <tr>
           <th>Title</th>
           <th>
-            <select value={value} onChange={handleChange}>
+            <select value={value} onChange={filter}>
               <option value="All">All</option>
               <option value="Groccery">Groccery</option>
               <option value="Clothes">Clothes</option>
@@ -70,15 +73,13 @@ function ExpenceTable({ expenses }) {
         </tr>
       </thead>
       <tbody>
-        {expenses
-          .filter((expense) => filterData(expense))
-          .map(({ id, title, category, amount }) => (
-            <tr key={id}>
-              <td>{title}</td>
-              <td>{category}</td>
-              <td>₹{amount}</td>
-            </tr>
-          ))}
+        {filteredData.map(({ id, title, category, amount }) => (
+          <tr key={id}>
+            <td>{title}</td>
+            <td>{category}</td>
+            <td>₹{amount}</td>
+          </tr>
+        ))}
         <tr>
           <th>Total</th>
           <th></th>

@@ -42,8 +42,8 @@ function ExpenseForm({ setExpenses }) {
       { minAmount: 1, message: "Amount should be greater than 0" },
     ],
     email: [
-      { required: true, message: "Please enter email" },
-      { pattern: { emailRegex }, message: "Enter a valid email" },
+      { emailFilled: false, message: "Please enter email" },
+      { emailFilled: true, message: "Enter a valid email" },
     ],
   };
 
@@ -77,22 +77,20 @@ function ExpenseForm({ setExpenses }) {
           return true;
         }
 
-        if (rule.required && !value) {
+        if (!rule.emailFilled && !value) {
           errorsData[key] = rule.message;
           return true;
         }
 
-        if (rule.required && !value) {
+        if (rule.emailFilled && !emailRegex.test(value)) {
           errorsData[key] = rule.message;
-        }
-
-        if (value && !emailRegex.test(value)) {
-          errorsData[key] = rule.message;
+          return true;
         }
       });
     });
 
     setWarnings(errorsData);
+
     return errorsData;
   };
 
@@ -109,10 +107,10 @@ function ExpenseForm({ setExpenses }) {
       ...prevValue,
       { ...expense, id: crypto.randomUUID() },
     ]);
-
     resetForm();
   };
 
+  // Another way of getting the data from the form
   // const getFormData = (form) => {
   //   const formData = new FormData(form);
   //   const data = {};
