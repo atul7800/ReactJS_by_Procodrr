@@ -138,7 +138,7 @@ function ExpenseForm({ setExpenses }) {
         value={expense.category}
         handleOnChange={handleOnChange}
         defaultOption={"Select category"}
-        options={["Grocey", "Clothes", "Education", "Bikes", "Medicine"]}
+        options={["Grocey", "Clothes", "Education", "Electronics", "Medicine"]}
         errorMsg={warnings.category}
       />
 
