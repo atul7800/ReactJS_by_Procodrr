@@ -3,8 +3,9 @@ import { FaArrowUp, FaArrowDown } from "react-icons/fa6";
 
 function ExpenceTable({ expenses }) {
   let total = 0;
-  const [filteredData, setFilteredData] = useState(expenses);
-  const [value, setValue] = useState("All");
+  //const [category, setCategory] = useState("All");
+  //const [filteredData, setFilteredData] = useState(expenses);
+  const [category, setCategory] = useState("");
   const [lowToHigh, setLowToHigh] = useState(true);
   console.log(`testing tags`);
 
@@ -12,36 +13,25 @@ function ExpenceTable({ expenses }) {
     sort();
   }, []);
 
-  useEffect(() => {
-    setFilteredData(expenses);
-  }, [expenses]);
+  const filteredData = expenses.filter((expense) =>
+    expense.category.includes(category)
+  );
 
   //update total amount
   filteredData.map((expense) => {
     total += +expense.amount; // + operator used to convert string into number, shorthand of Number()
   });
 
-  const filter = (e) => {
-    setValue(e.target.value);
-    if (e.target.value === "All") {
-      return setFilteredData(expenses);
-    } else {
-      setFilteredData(
-        // Method 1
-        // expenses.filter((expense) => expense.category === e.target.value);
-        //Method 2
-        expenses.filter((expense) => expense.category.includes(e.target.value))
-      );
-    }
-  };
-
   const sort = () => {
+    console.log(`sort called - ${JSON.stringify(filteredData, null, 2)}`);
     if (lowToHigh) {
       filteredData.sort((a, b) => a.amount - b.amount);
       setLowToHigh(!lowToHigh);
+      console.log(`sort if - ${JSON.stringify(filteredData, null, 2)}`);
     } else {
       filteredData.sort((a, b) => b.amount - a.amount);
       setLowToHigh(!lowToHigh);
+      console.log(`sort else - ${JSON.stringify(filteredData, null, 2)}`);
     }
   };
 
@@ -51,12 +41,15 @@ function ExpenceTable({ expenses }) {
         <tr>
           <th>Title</th>
           <th>
-            <select value={value} onChange={filter}>
-              <option value="All">All</option>
+            <select
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+            >
+              <option value="">All</option>
               <option value="Groccery">Groccery</option>
               <option value="Clothes">Clothes</option>
               <option value="Bills">Bills</option>
-              <option value="Bikes">Bikes</option>
+              <option value="Electronics">Electronics</option>
               <option value="Medicine">Medicine</option>
             </select>
           </th>
