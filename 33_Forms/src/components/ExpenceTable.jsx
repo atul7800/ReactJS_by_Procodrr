@@ -6,6 +6,7 @@ function ExpenceTable({ expenses }) {
   const [filteredData, setFilteredData] = useState(expenses);
   const [value, setValue] = useState("All");
   const [lowToHigh, setLowToHigh] = useState(true);
+  console.log(`testing tags`);
 
   useEffect(() => {
     sort();
