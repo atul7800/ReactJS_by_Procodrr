@@ -19,8 +19,8 @@ export default [
     },
     {
         id:crypto.randomUUID(),
-        title:'phone emi',
-        category:'Bills',
+        title:'headphone',
+        category:'Electronics',
         amount:800
     }
 ]

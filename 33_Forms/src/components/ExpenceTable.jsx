@@ -4,10 +4,8 @@ import { useFilter } from "../useFilter";
 
 function ExpenceTable({ expenses }) {
   let total = 0;
-  const [category, setCategory] = useState("");
   const [lowToHigh, setLowToHigh] = useState(true);
-  const [result, setQuery] = useFilter(expenses);
-  console.log(JSON.stringify(result, null, 2));
+  const [result, setQuery] = useFilter(expenses, (data) => data.category);
 
   useEffect(() => {
     sort();
@@ -38,7 +36,7 @@ function ExpenceTable({ expenses }) {
               <option value="">All</option>
               <option value="Groccery">Groccery</option>
               <option value="Clothes">Clothes</option>
-              <option value="Bills">Bills</option>
+              <option value="Education">Education</option>
               <option value="Electronics">Electronics</option>
               <option value="Medicine">Medicine</option>
             </select>
