@@ -1,36 +1,30 @@
 import React, { useEffect, useState } from "react";
 import { FaArrowUp, FaArrowDown } from "react-icons/fa6";
+import { useFilter } from "../useFilter";
 
 function ExpenceTable({ expenses }) {
   let total = 0;
-  //const [category, setCategory] = useState("All");
-  //const [filteredData, setFilteredData] = useState(expenses);
   const [category, setCategory] = useState("");
   const [lowToHigh, setLowToHigh] = useState(true);
+  const [result, setQuery] = useFilter(expenses);
+  console.log(JSON.stringify(result, null, 2));
 
   useEffect(() => {
     sort();
   }, []);
 
-  const filteredData = expenses.filter((expense) =>
-    expense.category.includes(category)
-  );
-
   //update total amount
-  filteredData.map((expense) => {
+  result.map((expense) => {
     total += +expense.amount; // + operator used to convert string into number, shorthand of Number()
   });
 
   const sort = () => {
-    console.log(`sort called - ${JSON.stringify(filteredData, null, 2)}`);
     if (lowToHigh) {
-      filteredData.sort((a, b) => a.amount - b.amount);
+      result.sort((a, b) => a.amount - b.amount);
       setLowToHigh(!lowToHigh);
-      console.log(`sort if - ${JSON.stringify(filteredData, null, 2)}`);
     } else {
-      filteredData.sort((a, b) => b.amount - a.amount);
+      result.sort((a, b) => b.amount - a.amount);
       setLowToHigh(!lowToHigh);
-      console.log(`sort else - ${JSON.stringify(filteredData, null, 2)}`);
     }
   };
 
@@ -40,10 +34,7 @@ function ExpenceTable({ expenses }) {
         <tr>
           <th>Title</th>
           <th>
-            <select
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
-            >
+            <select onChange={(e) => setQuery(e.target.value)}>
               <option value="">All</option>
               <option value="Groccery">Groccery</option>
               <option value="Clothes">Clothes</option>
@@ -66,7 +57,7 @@ function ExpenceTable({ expenses }) {
         </tr>
       </thead>
       <tbody>
-        {filteredData.map(({ id, title, category, amount }) => (
+        {result.map(({ id, title, category, amount }) => (
           <tr key={id}>
             <td>{title}</td>
             <td>{category}</td>
@@ -76,7 +67,7 @@ function ExpenceTable({ expenses }) {
         <tr>
           <th>Total</th>
           <th></th>
-          <th>{total}</th>
+          <th>₹{total}</th>
         </tr>
       </tbody>
     </table>
