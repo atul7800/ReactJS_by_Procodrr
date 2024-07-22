@@ -36,12 +36,6 @@ function ExpenceTable({ expenses, setExpenses }) {
     }
   };
 
-  // const handleContextMenu = (e) => {
-  //   e.preventDefault();
-  //   setMenuPosition({ left: e.clientX + 10, top: e.clientY + 10 });
-  //   rowId =
-  // };
-
   return (
     <>
       <ContextMenu
