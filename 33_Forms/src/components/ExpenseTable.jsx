@@ -1,20 +1,33 @@
-import React, { useState } from 'react'
-import { useFilter } from '../hooks/useFilter'
-import ContextMenu from './ContextMenu'
+import React, { useState } from "react";
+import { useFilter } from "../hooks/useFilter";
+import ContextMenu from "./ContextMenu";
 
-export default function ExpenseTable({ expenses, setExpenses }) {
-  const [filteredData, setQuery] = useFilter(expenses, (data) => data.category)
-  const [menuPosition, setMenuPosition] = useState({})
-  const [rowId, setRowId] = useState('')
+export default function ExpenseTable({
+  expenses,
+  setExpenses,
+  setExpense,
+  setIsEditingRowId,
+}) {
+  const [filteredData, setQuery] = useFilter(expenses, (data) => data.category);
+  const [menuPosition, setMenuPosition] = useState({});
+  const [rowId, setRowId] = useState("");
 
   const total = filteredData.reduce(
-    (accumulator, current) => accumulator + current.amount,
+    (accumulator, current) => accumulator + +current.amount,
     0
-  )
+  );
 
   return (
     <>
-      <ContextMenu menuPosition={menuPosition} setMenuPosition={setMenuPosition} setExpenses={setExpenses} rowId={rowId}/>
+      <ContextMenu
+        menuPosition={menuPosition}
+        setMenuPosition={setMenuPosition}
+        expenses={expenses}
+        setExpenses={setExpenses}
+        rowId={rowId}
+        setExpense={setExpense}
+        setIsEditingRowId={setIsEditingRowId}
+      />
       <table className="expense-table" onClick={() => setMenuPosition({})}>
         <thead>
           <tr>
@@ -59,9 +72,9 @@ export default function ExpenseTable({ expenses, setExpenses }) {
             <tr
               key={id}
               onContextMenu={(e) => {
-                e.preventDefault()
-                setMenuPosition({ left: e.clientX + 4, top: e.clientY + 4 })
-                setRowId(id)
+                e.preventDefault();
+                setMenuPosition({ left: e.clientX + 4, top: e.clientY + 4 });
+                setRowId(id);
               }}
             >
               <td>{title}</td>
@@ -77,5 +90,5 @@ export default function ExpenseTable({ expenses, setExpenses }) {
         </tbody>
       </table>
     </>
-  )
+  );
 }

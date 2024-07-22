@@ -1,18 +1,25 @@
-import React from 'react'
+import React from "react";
 
 export default function ContextMenu({
   menuPosition,
   setMenuPosition,
+  expenses,
   setExpenses,
+  setExpense,
   rowId,
+  setIsEditingRowId,
 }) {
-  if (!menuPosition.left) return
+  if (!menuPosition.left) return;
   return (
     <div className="context-menu" style={{ ...menuPosition }}>
       <div
         onClick={() => {
-          console.log('Editing')
-          setMenuPosition({})
+          setMenuPosition({});
+          setIsEditingRowId(rowId);
+          let [{ title, category, amount }] = expenses.filter(
+            (expenseItem) => expenseItem.id === rowId
+          );
+          setExpense({ title, category, amount });
         }}
       >
         Edit
@@ -21,12 +28,12 @@ export default function ContextMenu({
         onClick={() => {
           setExpenses((prevState) =>
             prevState.filter((expense) => expense.id !== rowId)
-          )
-          setMenuPosition({})
+          );
+          setMenuPosition({});
         }}
       >
         Delete
       </div>
     </div>
-  )
+  );
 }
