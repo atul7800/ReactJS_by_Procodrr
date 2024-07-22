@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { FaArrowUp, FaArrowDown } from "react-icons/fa6";
 
-function ExpenceTable({ expenses }) {
+function ExpenceTable({ expenses, expense, setExpense }) {
   let total = 0;
   //const [category, setCategory] = useState("All");
   //const [filteredData, setFilteredData] = useState(expenses);
@@ -23,15 +23,12 @@ function ExpenceTable({ expenses }) {
   });
 
   const sort = () => {
-    console.log(`sort called - ${JSON.stringify(filteredData, null, 2)}`);
     if (lowToHigh) {
       filteredData.sort((a, b) => a.amount - b.amount);
       setLowToHigh(!lowToHigh);
-      console.log(`sort if - ${JSON.stringify(filteredData, null, 2)}`);
     } else {
       filteredData.sort((a, b) => b.amount - a.amount);
       setLowToHigh(!lowToHigh);
-      console.log(`sort else - ${JSON.stringify(filteredData, null, 2)}`);
     }
   };
 
@@ -48,7 +45,7 @@ function ExpenceTable({ expenses }) {
               <option value="">All</option>
               <option value="Groccery">Groccery</option>
               <option value="Clothes">Clothes</option>
-              <option value="Bills">Bills</option>
+              <option value="Education">Education</option>
               <option value="Electronics">Electronics</option>
               <option value="Medicine">Medicine</option>
             </select>

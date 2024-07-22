@@ -2,17 +2,10 @@ import React, { useState, useEffect } from "react";
 import CustomInput from "./CustomInput";
 import CustomSelect from "./CustomSelect";
 
-function ExpenseForm({ setExpenses }) {
+function ExpenseForm({ setExpenses, expense, setExpense }) {
   const errorsData = {}; // to store all the error messages
   const [warnings, setWarnings] = useState({}); //to manage the state of error msgs on ui.
   const emailRegex = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
-
-  const [expense, setExpense] = useState({
-    title: "",
-    category: "",
-    amount: "",
-    email: "",
-  });
 
   // This function runs everytime there is any change in the form fields
   const handleOnChange = (e) => {
