@@ -9,6 +9,7 @@ function ExpenceTable({ expenses, setExpenses }) {
   const [result, setQuery] = useFilter(expenses, (data) => data.category);
   const [rowId, setRowId] = useState("");
 
+
   useEffect(() => {
     sort();
   }, []);
