@@ -1,37 +1,21 @@
-import { useState } from "react";
-import "./App.css";
-import ExpenseForm from "./components/ExpenseForm";
-import ExpenceTable from "./components/ExpenceTable";
-import ContextMenu from "./components/ContextMenu";
-import ExpenseData from "./ExpenseData";
+import { useState } from 'react'
+import './App.css'
+import ExpenseForm from './components/ExpenseForm'
+import ExpenseTable from './components/ExpenseTable'
+import expenseData from './expenseData'
 
 function App() {
-  const [expenses, setExpenses] = useState(ExpenseData);
-  const [expense, setExpense] = useState({
-    title: "",
-    category: "",
-    amount: "",
-    email: "",
-  });
+  const [expenses, setExpenses] = useState(expenseData)
 
   return (
     <main>
       <h1>Track Your Expense</h1>
       <div className="expense-tracker">
-        <ExpenseForm
-          setExpenses={setExpenses}
-          expense={expense}
-          setExpense={setExpense}
-        />
-        <ExpenceTable
-          expenses={expenses}
-          expense={expense}
-          setExpense={setExpense}
-        />
-        <ContextMenu />
+        <ExpenseForm setExpenses={setExpenses} />
+        <ExpenseTable expenses={expenses} setExpenses={setExpenses} />
       </div>
     </main>
-  );
+  )
 }
 
-export default App;
+export default App

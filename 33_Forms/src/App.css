@@ -26,6 +26,7 @@ main {
 .expense-table {
     width: 100%;
     border-collapse: collapse;
+    align-self: flex-start;
 }
 
 .expense-table select {
@@ -37,7 +38,6 @@ main {
 
 .amount-column div {
     display: flex;
-    justify-content: space-between;
 }
 
 .amount-column span {
@@ -75,17 +75,8 @@ main {
 .input-container {
     display: flex;
     flex-direction: column;
-    margin-bottom: 20px;
+    margin-bottom: 18px;
     position: relative;
-    margin-top: 5px;
-}
-
-.warningMsg{
-    position: absolute;
-    font-size: 12px;
-    color: maroon;
-    top: 100%;
-    margin: 0;
 }
 
 .input-container label {
@@ -97,10 +88,12 @@ main {
     font-family: inherit;
 }
 
-#category{
+
+#category {
     height: 28px;
-    font-family: inherit; 
+    font: inherit;
 }
+
 
 .add-btn {
     width: 100%;
@@ -114,7 +107,6 @@ main {
     background-color: white;
     border: 1px solid;
     position: absolute;
-    display: none;
     border-radius: 4px;
     overflow: hidden;
     box-shadow: 0 0 12px rgba(0, 0, 0, 0.3);
@@ -130,6 +122,13 @@ main {
     background-color: #ddd;
 }
 
+.error {
+    font-size: 12px;
+    color: red;
+    margin: 0;
+    position: absolute;
+    top: 100%;
+}
 @media (max-width: 900px) {
     body {
         margin-inline: 16px;

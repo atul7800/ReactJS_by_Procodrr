@@ -1,161 +1,107 @@
-import React, { useState, useEffect } from "react";
-import CustomInput from "./CustomInput";
-import CustomSelect from "./CustomSelect";
+import React, { useEffect, useRef, useState } from 'react'
+import Input from './Input'
+import Select from './Select'
 
-function ExpenseForm({ setExpenses, expense, setExpense }) {
-  const errorsData = {}; // to store all the error messages
-  const [warnings, setWarnings] = useState({}); //to manage the state of error msgs on ui.
-  const emailRegex = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
+export default function ExpenseForm({ setExpenses }) {
+  const [expense, setExpense] = useState({
+    title: '',
+    category: '',
+    amount: '',
+  })
 
-  // This function runs everytime there is any change in the form fields
-  const handleOnChange = (e) => {
-    const { name, value } = e.target;
-    setExpense((prevValue) => ({
-      ...prevValue,
-      [name]: value,
-    }));
-  };
+  const [errors, setErrors] = useState({})
 
-  // This function will be called once form is submitted to reset the form
-  function resetForm() {
-    setExpense({
-      title: "",
-      category: "",
-      amount: "",
-      email: "",
-    });
+  const validationConfig = {
+    title: [
+      { required: true, message: 'Please enter title' },
+      { minLength: 5, message: 'Title should be at least 5 characters long' },
+    ],
+    category: [{ required: true, message: 'Please select a category' }],
+    amount: [{ required: true, message: 'Please enter an amount' }],
   }
 
-  // This object will be used inside validateFormData() to validate the form inputs
-  const validationConfig = {
-    title: [{ required: true, message: "Please enter title" }],
-    category: [{ required: true, message: "Please select category" }],
-    amount: [
-      { required: true, message: "Please enter amount" },
-      { minAmount: 1, message: "Amount should be greater than 0" },
-    ],
-    email: [
-      { emailFilled: false, message: "Please enter email" },
-      { emailFilled: true, message: "Enter a valid email" },
-    ],
-  };
+  const validate = (formData) => {
+    const errorsData = {}
 
-  // This function will be called before submitting the form to validate the inputs
-  const validateFormData = () => {
-    /* Method 1
-    const requiredFields = ["title", "category", "amount"];
-    requiredFields.map((field) => {
-      if (!e.target[field].value) {
-        console.log(`${field} can't be empty`);
-      }
-    });
-    */
-    /*Method 2
-    const requiredFileds = ["Title", "Category", "Amount"];
-    requiredFileds.forEach((field) => {
-      if (!expense[field.toLowerCase()]) {
-        errorsData[field] = `${field} can't be empty`;
-      }
-    }); */
-    // Method 3
-    Object.entries(expense).map(([key, value]) => {
+    Object.entries(formData).forEach(([key, value]) => {
       validationConfig[key].some((rule) => {
         if (rule.required && !value) {
-          errorsData[key] = rule.message;
-          return true;
+          errorsData[key] = rule.message
+          return true
         }
 
-        if (rule.minAmount && value <= 0) {
-          errorsData[key] = rule.message;
-          return true;
+        if (rule.minLength && value.length < 5) {
+          errorsData[key] = rule.message
+          return true
         }
 
-        if (!rule.emailFilled && !value) {
-          errorsData[key] = rule.message;
-          return true;
+        if (rule.pattern && !rule.pattern.test(value)) {
+          errorsData[key] = rule.message
+          return true
         }
+      })
+    })
 
-        if (rule.emailFilled && !emailRegex.test(value)) {
-          errorsData[key] = rule.message;
-          return true;
-        }
-      });
-    });
-
-    setWarnings(errorsData);
-
-    return errorsData;
-  };
+    setErrors(errorsData)
+    return errorsData
+  }
 
   const handleSubmit = (e) => {
-    e.preventDefault();
+    e.preventDefault()
 
-    // Check if there are any values inside errorsData which is returned by validateFormData(). If any value is there that means form is not filled properly, hence return from here without adding the data inside setExpenses array.
-    const validationResult = validateFormData();
-    if (Object.keys(validationResult).length) {
-      return;
-    }
+    const validateResult = validate(expense)
 
-    setExpenses((prevValue) => [
-      ...prevValue,
+    if (Object.keys(validateResult).length) return
+
+    setExpenses((prevState) => [
+      ...prevState,
       { ...expense, id: crypto.randomUUID() },
-    ]);
-    resetForm();
-  };
+    ])
+    setExpense({
+      title: '',
+      category: '',
+      amount: '',
+    })
+  }
 
-  // Another way of getting the data from the form
-  // const getFormData = (form) => {
-  //   const formData = new FormData(form);
-  //   const data = {};
-  //   for (const [key, value] of formData.entries()) {
-  //     data[key] = value;
-  //   }
-  //   return data;
-  // };
+  const handleChange = (e) => {
+    const { name, value } = e.target
+    setExpense((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }))
+    setErrors({})
+  }
 
   return (
-    <form onSubmit={handleSubmit} className="expense-form">
-      <CustomInput
-        label={"Title"}
-        id={"title"}
-        name={"title"}
+    <form className="expense-form" onSubmit={handleSubmit}>
+      <Input
+        label="Title"
+        id="title"
+        name="title"
         value={expense.title}
-        handleOnChange={handleOnChange}
-        errorMsg={warnings.title}
+        onChange={handleChange}
+        error={errors.title}
       />
-
-      <CustomSelect
-        label={"Category"}
-        id={"category"}
-        name={"category"}
+      <Select
+        label="Category"
+        id="category"
+        name="category"
         value={expense.category}
-        handleOnChange={handleOnChange}
-        defaultOption={"Select category"}
-        options={["Grocey", "Clothes", "Education", "Electronics", "Medicine"]}
-        errorMsg={warnings.category}
+        onChange={handleChange}
+        options={['Grocery', 'Clothes', 'Bills', 'Education', 'Medicine']}
+        defaultOption="Select Category"
+        error={errors.category}
       />
-
-      <CustomInput
-        label={"Amount"}
-        id={"amount"}
-        name={"amount"}
+      <Input
+        label="Amount"
+        id="amount"
+        name="amount"
         value={expense.amount}
-        handleOnChange={handleOnChange}
-        errorMsg={warnings.amount}
+        onChange={handleChange}
+        error={errors.amount}
       />
-
-      <CustomInput
-        label={"Email"}
-        id={"email"}
-        name={"email"}
-        value={expense.email}
-        handleOnChange={handleOnChange}
-        errorMsg={warnings.email}
-      />
-
       <button className="add-btn">Add</button>
     </form>
-  );
+  )
 }
-
-export default ExpenseForm;
