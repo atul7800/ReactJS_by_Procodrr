@@ -1,33 +1,36 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import App from './App.jsx'
-import './index.css'
-import { RouterProvider, createBrowserRouter } from 'react-router-dom'
-import Home from './components/Home.jsx'
-import About from './components/About.jsx'
-import Contact from './components/Contact.jsx'
+import React, { lazy } from "react";
+import ReactDOM from "react-dom/client";
+import App from "./App.jsx";
+import "./index.css";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import Home from "./components/Home.jsx";
+//import About from "./components/About.jsx";
+import Contact from "./components/Contact.jsx";
+
+const About = lazy(() => import("./components/About.jsx"));
 
 const router = createBrowserRouter([
   {
-    path: '/',
+    path: "/",
     element: <App />,
     errorElement: <Error />,
     children: [
       {
-        path: '/',
+        path: "/",
         element: <Home />,
       },
       {
-        path: '/about',
+        path: "/about",
         element: <About />,
       },
       {
-        path: '/contact',
+        path: "/contact",
         element: <Contact />,
       },
     ],
   },
-])
+]);
 
-
-ReactDOM.createRoot(document.getElementById('root')).render(<RouterProvider router={router} />)
+ReactDOM.createRoot(document.getElementById("root")).render(
+  <RouterProvider router={router} />,
+);
