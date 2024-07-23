@@ -3,13 +3,17 @@ import "./App.css";
 import ExpenseForm from "./components/ExpenseForm";
 import ExpenseTable from "./components/ExpenseTable";
 import expenseData from "./expenseData";
+import { useLocalStorage } from "./hooks/useLocalStorage";
 
 function App() {
-  const [expenses, setExpenses] = useState(expenseData);
-  const [isEditingRowId, setIsEditingRowId] = useState("");
+  const [expenses, setExpenses] = useLocalStorage("expenses", expenseData);
+  const [isEditingRowId, setIsEditingRowId] = useLocalStorage(
+    "isEditingRowId",
+    ""
+  );
   const [sortCallback, setSortCallback] = useState(() => () => {});
-  console.log(sortCallback);
-  const [expense, setExpense] = useState({
+
+  const [expense, setExpense] = useLocalStorage("expense", {
     title: "",
     category: "",
     amount: "",

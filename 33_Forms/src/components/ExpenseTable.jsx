@@ -13,7 +13,6 @@ export default function ExpenseTable({
   const [filteredData, setQuery] = useFilter(expenses, (data) => data.category);
   const [menuPosition, setMenuPosition] = useState({});
   const [rowId, setRowId] = useState("");
-  console.log("tags test done");
 
   const total = filteredData.reduce(
     (accumulator, current) => accumulator + +current.amount,
